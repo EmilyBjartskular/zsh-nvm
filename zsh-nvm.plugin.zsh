@@ -109,9 +109,22 @@ _zsh_nvm_lazy_load() {
     eval "$cmd(){
       unset -f $cmds > /dev/null 2>&1
       _zsh_nvm_load
+      [[ \"$NVM_AUTO_USE\" == true ]] && _zsh_nvm_auto_use
       $cmd \"\$@\"
     }"
   done
+
+  eval "_zsh_nvm_check_nvm() {
+    if [[ \"\$(type node)\" = *'a shell function'* ]]; then
+      if [[ -f 'package.json' ]]; then
+        unset -f $cmds > /dev/null 2>&1
+        _zsh_nvm_load
+      fi
+    else
+      add-zsh-hook -d chpwd _zsh_nvm_check_nvm
+    fi
+  }"
+  add-zsh-hook chpwd _zsh_nvm_check_nvm
 }
 
 nvm_update() {
