@@ -125,6 +125,7 @@ _zsh_nvm_lazy_load() {
     fi
   }"
   add-zsh-hook chpwd _zsh_nvm_check_nvm
+  _zsh_nvm_check_nvm
 }
 
 nvm_update() {
